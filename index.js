@@ -1,6 +1,6 @@
-const hljs = require('highlight.js')
+var hljs = require('highlight.js')
 
-const maybe = f => {
+var maybe = function (f) {
   try {
     return f()
   } catch (e) {
@@ -9,24 +9,27 @@ const maybe = f => {
 }
 
 // Highlight with given language.
-const highlight = (code, lang) =>
-  maybe(() => hljs.highlight(lang, code, true).value) || ''
+var highlight = function (code, lang) {
+  return maybe(function () { return hljs.highlight(lang, code, true).value; }) || '';
+}
 
 // Highlight with given language or automatically.
-const highlightAuto = (code, lang) =>
-  lang
+var highlightAuto = function (code, lang) {
+  return lang
     ? highlight(code, lang)
-    : maybe(() => hljs.highlightAuto(code).value) || ''
+    : maybe(() => hljs.highlightAuto(code).value) || '';
+}
 
 // Wrap a render function to add `hljs` class to code blocks.
-const wrap = render =>
-  function (...args) {
-    return render.apply(this, args)
+var wrap = function (render) {
+  return function () {
+    return render.apply(this, arguments)
       .replace('<code class="', '<code class="hljs ')
       .replace('<code>', '<code class="hljs">')
-  }
+  };
+}
 
-const highlightjs = (md, opts) => {
+var highlightjs = function (md, opts) {
   opts = Object.assign({}, highlightjs.defaults, opts)
 
   md.options.highlight = opts.auto ? highlightAuto : highlight
