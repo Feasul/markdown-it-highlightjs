@@ -17,7 +17,7 @@ var highlight = function (code, lang) {
 var highlightAuto = function (code, lang) {
   return lang
     ? highlight(code, lang)
-    : maybe(() => hljs.highlightAuto(code).value) || '';
+    : maybe(function () { return hljs.highlightAuto(code).value; }) || '';
 }
 
 // Wrap a render function to add `hljs` class to code blocks.
